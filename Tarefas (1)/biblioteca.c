@@ -8,97 +8,204 @@
 #include <string.h>
 // aqui em cima eu adicionei alguns std a mais para facilitar
 
-Tarefa Lista[maxtarefas];
+void limpar() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) {
+    }
+};
 
-int criararquivo(){
-    FILE*arqtarefas = fopen("arqtarefas","wb");
-  if(arqtarefas == NULL){
-    return 1;
-  }
-    fwrite(&Lista,sizeof(Tarefa),maxtarefas,arqtarefas);
+int criararquivo(Tarefa Nome[], char nomearq[]) {
+    FILE *arqtarefas = fopen(nomearq, "wb");
+    if (arqtarefas == NULL) {
+        return 1;
+    }
+    fwrite(&Nome, sizeof(Tarefa), maxtarefas, arqtarefas);
     fclose(arqtarefas);
     return 0;
 }
 
-void Menu(){
-  int cod;
-  cod = lerarquivo();
-  if(cod == 1){
-    printf("Nao foi possivel ler o arquivo!");
-  }
-  Tarefa *tarefa = malloc(sizeof(Tarefa));
-  int opcao;
-  do{                                             // aqui eh praticamente so o print c o menu
-      printf(" --- MENU ---\n");
-      printf("1 - Criar tarefa.\n2 - Deletar tarefa.\n3 - Listar tarefas.\n0 - Sair.\n");
-      printf("Digite a operacao que deseja realizar: ");
-      scanf("%d",&opcao);
-      getchar();
-      switch(opcao){                  // e aqui eh aquele metodo de usar tipo, caso seja 1, caso seja 2 e etc
-          case 1:
-              CriarTarefa();
-          break;
-          case 2:
-              DeletarTarefa();
-          break;
-          case 3:
-              ListarTarefas();
-          break;
+void Menu() {
+    Tarefa Lista[maxtarefas];
+    for (int i = 0; i < maxtarefas; i++) {
+        Lista[i].existe = 0;
+    }
+    int cod;
+    cod = lerarquivo(Lista, "arqtarefas");
+    if (cod == 1) {
+        printf("Nao foi possivel ler o arquivo!");
+    }
+    int opcao;
+    do { // aqui eh praticamente so o print c o menu
+        printf(" --- MENU ---\n");
+        printf(
+                "1 - Criar tarefa.\n2 - Deletar tarefa.\n3 - Listar tarefas.\n4 - "
+                "Alterar Tarefa.\n"
+                "5 - Filtrar Tarefa pela Prioridade. \n6 - Filtrar Tarefa pelo Estado. "
+                "\n7 - Filtrar Tarefa pela Categoria \n"
+                "8 - Filtrar Tarefa por Categoria e Prioridade \n9 - Exportar Tarefa "
+                "por Prioridade \n 10 - Exportar Tarefa pela Categoria \n 11 - "
+                "Exportar Tarefa por Categoria e Prioridade \n0 - Sair.\n");
+        printf("Digite a operacao que deseja realizar: ");
+        scanf("%d", &opcao);
+        printf("\n");
+        getchar();
+        switch (opcao) { // e aqui eh aquele metodo de usar tipo, caso seja 1, caso
+            // seja 2 e etc
+            case 1:
+                CriarTarefa(Lista);
+                break;
+            case 2:
+                DeletarTarefa(Lista);
+                break;
+            case 3:
+                ListarTarefas(Lista);
+                break;
+            case 4:
+                Alterartarefa(Lista);
+                break;
+            case 5:
+                FiltrartarefaPri(Lista);
+                break;
+            case 6:
+                FiltrartarefaEstado(Lista);
+                break;
+            case 7:
+                FiltrartarefaCat(Lista);
+                break;
+            case 8:
+                FiltrartarefaCatPri(Lista);
+                break;
+            case 9:
+                ExportarPri(Lista);
+                break;
+            case 10:
+                ExportarCat(Lista);
+                break;
+            case 11:
+                ExportarCatPri(Lista);
+                break;
         };
-    }while(opcao != 0);
-    criararquivo();
+    } while (opcao != 0);
+    criararquivo(Lista, "arqtarefas");
 }
 
-void CriarTarefa(){
+void CriarTarefa(Tarefa Nome[]) {
     char tarefa[100];
     char descricao[300];
     int prioridade;
+    char estado[15];
+    char categoria[15];
+    size_t len2;
+    size_t len;
     printf("Digite sua tarefa: ");
-    fgets(tarefa,sizeof(tarefa),stdin);             // aqui n tem mt coisa de difrente, mas basicamente oq essa funcao faz
-    printf("Digite aqui a descricao desta tarefa: ");           // é a conta da variavel que a pessoa digitou c o maximo de caracteres, exemplo na descricao sao 300
-    fgets(descricao,sizeof(descricao),stdin);       // o stdin faz c oq a pessoa digite va para a variuavel descricao, nesse caso
+    fgets(tarefa, sizeof(tarefa), stdin); // aqui n tem mt coisa de difrente, mas
+    // basicamente oq essa funcao faz
+    printf(
+            "Digite aqui a descricao desta tarefa: "); // é a conta da variavel que a
+    // pessoa digitou c o maximo de
+    // caracteres, exemplo na
+    // descricao sao 300
+    fgets(descricao, sizeof(descricao),
+          stdin); // o stdin faz c oq a pessoa digite va para a variuavel
+    // descricao, nesse caso
     printf("Digite aqui a prioridade desta tarefa: ");
-    scanf("%d",&prioridade);
-    for(int i = 0; i < maxtarefas; i++){
-        if (Lista[i].existe == 0){
-            strcpy(Lista[i].tarefa, tarefa);                // essa parte de for e if, adiciona as coisas no struct 
-            strcpy(Lista[i].descricao, descricao);
-            Lista[i].prioridade = prioridade;
-            Lista[i].existe = 1;
+    scanf("%d", &prioridade);
+    limpar();
+    char testeestado[15];
+    char testeestado2[15];
+    char testeestado3[15];
+    int comp;
+    int comp2;
+    int comp3;
+    sprintf(testeestado, "Completo");
+    sprintf(testeestado2, "Em andamento");
+    sprintf(testeestado3, "Nao iniciado");
+    do {
+        printf("Digite o estado dessa tarefa(Completo,Em andamento ou Nao "
+               "iniciado): ");
+        fgets(estado, sizeof(estado), stdin);
+        len = strlen(estado);
+        if (estado[len - 1] == '\n')
+            estado[--len] = 0;
+        comp = strcmp(estado, testeestado);
+        comp2 = strcmp(estado, testeestado2);
+        comp3 = strcmp(estado, testeestado3);
+    } while (comp != 0 && comp2 != 0 && comp3 != 0);
+    char testecategoria[15];
+    char testecategoria2[15];
+    char testecategoria3[15];
+    char testecategoria4[15];
+    sprintf(testecategoria, "Casa");
+    sprintf(testecategoria2, "Trabalho");
+    sprintf(testecategoria3, "Estudo");
+    sprintf(testecategoria4, "Lazer");
+    int comp4;
+    int comp5;
+    int comp6;
+    int comp7;
+    do {
+        printf("Digite a categoria dessa tarefa(Casa,Trabalho,Estudo e Lazer): ");
+        fgets(categoria, sizeof(categoria), stdin);
+        len2 = strlen(categoria);
+        if (categoria[len2 - 1] == '\n')
+            categoria[--len2] = 0;
+        comp4 = strcmp(categoria, testecategoria);
+        comp5 = strcmp(categoria, testecategoria2);
+        comp6 = strcmp(categoria, testecategoria3);
+        comp7 = strcmp(categoria, testecategoria4);
+    } while (comp4 != 0 && comp5 != 0 && comp6 != 0 && comp7 != 0);
+    for (int i = 0; i < maxtarefas; i++) {
+        if (Nome[i].existe == 0) {
+            strcpy(Nome[i].tarefa,
+                   tarefa); // essa parte de for e if, adiciona as coisas no struct
+            strcpy(Nome[i].descricao, descricao);
+            strcpy(Nome[i].estado, estado);
+            strcpy(Nome[i].categoria, categoria);
+            Nome[i].prioridade = prioridade;
+            Nome[i].existe = 1;
             break;
         };
     };
 };
-void DeletarTarefa(){
-    printf("Aqui está sua lista!\n");               //Aqui na funcao deletar, eu vejo se dentro do .existe
-    ListarTarefas2();                                      // no struct é 1 ou 0, caso seja 1 quer dizer q existe uma tarefa la
-    int del;                                                // e eu deleto igualando esse .existe igual a 0
+
+void DeletarTarefa(Tarefa Nome[]) {
+    printf("Aqui está sua lista!\n"); // Aqui na funcao deletar, eu vejo se dentro
+    // do .existe
+    ListarTarefas2(Nome); // no struct é 1 ou 0, caso seja 1 quer dizer q existe
+    // uma tarefa la
+    int del;              // e eu deleto igualando esse .existe igual a 0
     printf("Qual tarefa deseja excluir: ");
     scanf("%d", &del);
     int pos = del - 1;
-    Lista[pos].existe = 0;
+    Nome[pos].existe = 0;
     printf("Tarefa excluida com sucesso!");
 };
-void ListarTarefas(){
-    printf("--- LISTA DE TAREFAS ---\n");               //aqui passa por cada indice do array
-    printf("\n");                                       // e da um print para cada indice
-    for(int i = 0; i < maxtarefas; i++){
-        if(Lista[i].existe == 1) {
-            printf("Tarefa: %s", Lista[i].tarefa);
-            printf("Descricao: %s", Lista[i].descricao);
-            printf("Prioridade: %d", Lista[i].prioridade);
+
+void ListarTarefas(Tarefa Nome[]) {
+    printf("\n--- LISTA DE TAREFAS ---\n"); // aqui passa por cada indice do array
+    printf("\n");                           // e da um print para cada indice
+    for (int i = 0; i < maxtarefas; i++) {
+        if (Nome[i].existe == 1) {
+            printf("Tarefa: %s", Nome[i].tarefa);
+            printf("Descricao: %s", Nome[i].descricao);
+            printf("Prioridade: %d\n", Nome[i].prioridade);
+            printf("Estado: %s\n", Nome[i].estado);
+            printf("Categoria: %s", Nome[i].categoria);
             printf("\n-----------------\n");
         }
     }
 };
 
-void ListarTarefas2(){
-    for(int i = 0; i < maxtarefas; i++){            //essa funcao é so para deixar um "mini menu" funcao deletar
-        if(Lista[i].existe == 1) {
+void ListarTarefas2(Tarefa Nome[]) {
+    printf("\n---LISTA DE TAREFAS---\n\n");
+    for (int i = 0; i < maxtarefas;
+         i++) { // essa funcao é so para deixar um "mini menu" funcao deletar
+        if (Nome[i].existe == 1) {
             int num = i + 1;
-            printf("Tarefa %d: %s\n",num, Lista[i].tarefa);
+            printf("Tarefa %d: %s", num, Nome[i].tarefa);
         }
     }
+    printf("\n");
 };
 
 void Alterartarefa(Tarefa Nome[]) {
@@ -465,12 +572,12 @@ void ExportarCatPri(Tarefa Nome[]) {
     printf("\n");
 }
 
-int lerarquivo(){
-    FILE*arqtarefas = fopen("arqtarefas","rb");
-  if(arqtarefas == NULL){
-    return 1;
-  } 
-    fread(&Lista,sizeof(Tarefa),maxtarefas,arqtarefas);
+int lerarquivo(Tarefa Nome[], char nomearq[]) {
+    FILE *arqtarefas = fopen(nomearq, "rb");
+    if (arqtarefas == NULL) {
+        return 1;
+    }
+    fread(&Nome, sizeof(Tarefa), maxtarefas, arqtarefas);
     fclose(arqtarefas);
     return 0;
 };
