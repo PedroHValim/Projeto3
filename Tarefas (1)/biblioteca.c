@@ -101,6 +101,70 @@ void ListarTarefas2(){
     }
 };
 
+void Alterartarefa(Tarefa Nome[]) {
+    char novatarefa[20];
+    char novadescricao[100];
+    int novaprioridade;
+    char novoestado[15];
+    int num;
+    int alt;
+    int opcao;
+    ListarTarefas2(Nome);
+    printf("Digite qual tarefa deseja alterar: ");
+    scanf("%d", &alt);
+    num = alt - 1;
+    printf("1. A tarefa.\n");
+    printf("2. A descricao.\n");
+    printf("3. A prioridade.\n");
+    printf("4. O estado.\n");
+    printf("Digite o que deseja mudar: ");
+    scanf("%d", &opcao);
+    limpar();
+    if (opcao == 1) {
+        printf("Digite qual vai ser a nova tarefa: ");
+        fgets(novatarefa, sizeof(novatarefa), stdin);
+        sprintf(Nome[num].tarefa, novatarefa);
+        printf("Tarefa alterada com sucesso!\n\n");
+    }
+    if (opcao == 2) {
+        printf("Digite qual vai ser a nova descricao: ");
+        fgets(novadescricao, sizeof(novatarefa), stdin);
+        sprintf(Nome[num].descricao, novadescricao);
+        printf("Descricao alterada com sucesso!\n");
+    }
+    if (opcao == 3) {
+        printf("Digite qual vai ser a nova prioridade: ");
+        scanf("%d", &novaprioridade);
+        Nome[num].prioridade = novaprioridade;
+        printf("Prioridade alterada com sucesso!\n");
+    }
+    if (opcao == 4) {
+        char estado[15];
+        char testeestado[15];
+        char testeestado2[15];
+        char testeestado3[15];
+        int comp;
+        int comp2;
+        int comp3;
+        size_t len;
+        sprintf(testeestado, "Completo");
+        sprintf(testeestado2, "Em andamento");
+        sprintf(testeestado3, "Nao iniciado");
+        do {
+            printf("Digite o novo estado(Completo,Em andamento ou Nao iniciado): ");
+            fgets(novoestado, sizeof(novoestado), stdin);
+            len = strlen(estado);
+            if (estado[len - 1] == '\n')
+                estado[--len] = 0;
+            comp = strcmp(estado, testeestado);
+            comp2 = strcmp(estado, testeestado2);
+            comp3 = strcmp(estado, testeestado3);
+        } while (comp != 0 && comp2 != 0 && comp3 != 0);
+        sprintf(Nome[num].estado, novoestado);
+        printf("Estado alterado com sucesso!\n\n");
+    }
+};
+
 int lerarquivo(){
     FILE*arqtarefas = fopen("arqtarefas","rb");
   if(arqtarefas == NULL){
