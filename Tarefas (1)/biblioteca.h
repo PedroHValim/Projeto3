@@ -35,4 +35,20 @@ void ExportarCat(Tarefa Nome[]);
 void ExportarCatPri(Tarefa Nome[]);
 void limpar();
 
+
+void ListarTarefas2();
+void CriarTarefa();
+void DeletarTarefa();
+void ListarTarefas();
+void FiltrartarefaPri(Tarefa Nome[]);
+void FiltrartarefaEstado(Tarefa Nome[]);
+void FiltrartarefaCat(Tarefa Nome[]);
+void FiltrartarefaCatPri(Tarefa Nome[]);
+int criararquivo();
+int lerarquivo();
+
+
 #endif //CLIONPROJECTS_BIBLIOTECA_H
+
+#endif //CLIONPROJECTS_BIBLIOTECA_H
+
