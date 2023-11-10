@@ -21,8 +21,9 @@ void ListarTarefas2();
 void CriarTarefa();
 void DeletarTarefa();
 void ListarTarefas();
+void Alterartarefa(Tarefa Nome[]);
 int criararquivo();
 int lerarquivo();
-int numtarefas();
+
 
 #endif //CLIONPROJECTS_BIBLIOTECA_H
