@@ -24,6 +24,7 @@ void ListarTarefas();
 void ExportarPri(Tarefa Nome[]);
 void ExportarCat(Tarefa Nome[]);
 void ExportarCatPri(Tarefa Nome[]);
+void Alterartarefa(Tarefa Nome[]);
 int criararquivo();
 int lerarquivo();
 
