@@ -329,6 +329,142 @@ void FiltrartarefaCatPri(Tarefa Nome[]) {
     printf("\n");
 }
 
+void ExportarPri(Tarefa Nome[]) {
+    int contador;
+    int pri;
+    printf("Digite a prioridade das tarefas quais deseja exportar: ");
+    scanf("%d", &pri);
+    FILE *tarefaarq = fopen("tarefas.txt",
+                            "w"); // cria um arquivo para a tarefa pela prioridade
+    fprintf(tarefaarq, "Prioridade desejada: %d", pri);
+    fprintf(tarefaarq, "\n");
+    fprintf(tarefaarq, "----- TAREFAS -----\n");
+    fprintf(tarefaarq, "\n");
+    for (int i = 0; i < maxtarefas; i++) {
+        if (Nome[i].existe == 1)
+            if (Nome[i].prioridade == pri && Nome[i].existe == 1) {
+                contador = contador + 1;
+                fprintf(tarefaarq, "Tarefa: %s", Nome[i].tarefa);
+                printf("Tarefa: %s", Nome[i].tarefa);
+            }
+    }
+
+    if (contador == 0) {
+        printf("Nao tem nenhuma tarefa com essa prioridade!\n");
+        fprintf(tarefaarq,"Nao tem nenhuma tarefa com essa prioridade!\n");
+    }
+    fclose(tarefaarq);
+}
+
+void ExportarCat(Tarefa Nome[]) {
+    int contador;
+    char categoria[15];
+    char testecat[15];
+    char testecat2[15];
+    char testecat3[15];
+    char testecat4[15];
+    int comp;
+    int comp2;
+    int comp3;
+    int comp4;
+    int comp5;
+    size_t len;
+    sprintf(testecat, "Casa");
+    sprintf(testecat2, "Trabalho");
+    sprintf(testecat3, "Estudo");
+    sprintf(testecat4, "Lazer");
+    do {
+        printf("Digite a categoria que deseja filtrar(Casa,Trabalho,Estudo e "
+               "Lazer): ");
+        fgets(categoria, sizeof(categoria), stdin);
+        len = strlen(categoria);
+        if (categoria[len - 1] == '\n')
+            categoria[--len] = 0;
+        comp = strcmp(categoria, testecat);
+        comp2 = strcmp(categoria, testecat2);
+        comp3 = strcmp(categoria, testecat3);
+        comp4 = strcmp(categoria, testecat4);
+    } while (comp != 0 && comp2 != 0 && comp3 != 0 && comp4 != 0);
+    FILE *tarefaarq =
+            fopen("tarefas.txt", "w"); // cria um arquivo para a tarefa pela categoria
+    fprintf(tarefaarq, "Categoria desejada: %s", categoria);
+    fprintf(tarefaarq, "\n");
+    fprintf(tarefaarq, "----- TAREFAS -----\n");
+    fprintf(tarefaarq, "\n");
+    for (int i = 0; i < maxtarefas; i++) {
+        comp5 = strcmp(categoria, Nome[i].categoria);
+        if (comp5 == 0 && Nome[i].existe == 1) {
+            contador = contador + 1;
+            printf("Tarefa: %s", Nome[i].tarefa);
+            fprintf(tarefaarq, "Tarefa: %s", Nome[i].tarefa);
+        }
+    }
+    if (contador == 0) {
+        printf("Nao tem nenhuma tarefa com essa categoria!\n");
+        fprintf(tarefaarq,"Nao tem nenhuma tarefa com essa categoria!\n");
+    }
+    fclose(tarefaarq);
+    printf("\n");
+}
+
+void ExportarCatPri(Tarefa Nome[]) {
+    int pri;
+    int contador;
+    char categoria[15];
+    char testecat[15];
+    char testecat2[15];
+    char testecat3[15];
+    char testecat4[15];
+    int comp;
+    int comp2;
+    int comp3;
+    int comp4;
+    int comp5;
+    size_t len;
+    sprintf(testecat, "Casa");
+    sprintf(testecat2, "Trabalho");
+    sprintf(testecat3, "Estudo");
+    sprintf(testecat4, "Lazer");
+    do {
+        printf("Agora digite a categoria que deseja filtrar(Casa,Trabalho,Estudo e "
+               "Lazer): ");
+        fgets(categoria, sizeof(categoria), stdin);
+        len = strlen(categoria);
+        if (categoria[len - 1] == '\n')
+            categoria[--len] = 0;
+        comp = strcmp(categoria, testecat);
+        comp2 = strcmp(categoria, testecat2);
+        comp3 = strcmp(categoria, testecat3);
+        comp4 = strcmp(categoria, testecat4);
+    } while (comp != 0 && comp2 != 0 && comp3 != 0 && comp4 != 0);
+    printf("Digite a prioridade que deseja filtrar: ");
+    scanf("%d", &pri);
+    FILE *tarefaarq =
+            fopen("tarefas.txt", "w"); // cria um arquivo para a tarefa pela categoria
+    fprintf(tarefaarq, "Categoria e Prioridade desejada: %s e %d", categoria,
+            pri);
+    fprintf(tarefaarq, "\n");
+    fprintf(tarefaarq, "----- TAREFAS -----\n");
+    fprintf(tarefaarq, "\n");
+    for (int i = 0; i < maxtarefas; i++) {
+        comp5 = strcmp(categoria, Nome[i].categoria);
+        if (Nome[i].prioridade == pri && comp5 == 0 && Nome[i].existe == 1) {
+            contador = contador + 1;
+            printf("Tarefa: %s", Nome[i].tarefa);
+            fprintf(tarefaarq, "Tarefa: %s", Nome[i].tarefa);
+        }
+    }
+
+    if (contador == 0) {
+        printf("Nao tem nenhuma tarefa com essa prioridade em comum com a "
+               "categoria!\n");
+        fprintf(tarefaarq,"Nao tem nenhuma tarefa com essa prioridade em comum com a "
+               "categoria!\n");
+    }
+    fclose(tarefaarq);
+    printf("\n");
+}
+
 int lerarquivo(){
     FILE*arqtarefas = fopen("arqtarefas","rb");
   if(arqtarefas == NULL){
