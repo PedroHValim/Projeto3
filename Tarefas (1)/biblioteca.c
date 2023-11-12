@@ -25,8 +25,8 @@ int criararquivo(Tarefa Nome[], char nomearq[]) {
 }
 
 void Menu() {
-    Tarefa Lista[maxtarefas];
-    for (int i = 0; i < maxtarefas; i++) {
+    Tarefa Lista[maxtarefas];      //aqui é a lista onde ocorre todas as operações 
+    for (int i = 0; i < maxtarefas; i++) {   // aqui deixa toas as variaveis existe como 0, significando q nao existe tarefa naquela posição
         Lista[i].existe = 0;
     }
     int cod;
@@ -35,7 +35,7 @@ void Menu() {
         printf("Nao foi possivel ler o arquivo!");
     }
     int opcao;
-    do { // aqui eh praticamente so o print c o menu
+    do { // aqui eh praticamente so o print c o menu e logo em seguida tem as chamadas das funções 
         printf(" --- MENU ---\n");
         printf(
                 "1 - Criar tarefa.\n2 - Deletar tarefa.\n3 - Listar tarefas.\n4 - "
@@ -88,7 +88,7 @@ void Menu() {
     criararquivo(Lista, "arqtarefas");
 }
 
-void CriarTarefa(Tarefa Nome[]) {
+void CriarTarefa(Tarefa Nome[]) {   
     char tarefa[100];
     char descricao[300];
     int prioridade;
@@ -122,8 +122,8 @@ void CriarTarefa(Tarefa Nome[]) {
     sprintf(testeestado2, "Em andamento");
     sprintf(testeestado3, "Nao iniciado");
     do {
-        printf("Digite o estado dessa tarefa(Completo,Em andamento ou Nao iniciado): ");
-        fgets(estado, sizeof(estado), stdin);
+        printf("Digite o estado dessa tarefa(Completo,Em andamento ou Nao iniciado): ");        //nessa parte temos a comparação doq a pessoas digitou
+        fgets(estado, sizeof(estado), stdin);                                                   //c as possibilidades de estado
         len = strlen(estado);
         if (estado[len - 1] == '\n')estado[--len] = 0;
         comp = strcmp(estado, testeestado);
@@ -143,7 +143,7 @@ void CriarTarefa(Tarefa Nome[]) {
     int comp6;
     int comp7;
     do {
-        printf("Digite a categoria dessa tarefa(Casa,Trabalho,Estudo e Lazer): ");
+        printf("Digite a categoria dessa tarefa(Casa,Trabalho,Estudo e Lazer): ");      //aqui temos a compração da categoria digitadas com as possíveis
         fgets(categoria, sizeof(categoria), stdin);
         len2 = strlen(categoria);
         if (categoria[len2 - 1] == '\n')
@@ -205,8 +205,8 @@ void ListarTarefas2(Tarefa Nome[]) {
 };
 
 void Alterartarefa(Tarefa Nome[]) {
-    char novatarefa[20];
-    char novadescricao[100];
+    char novatarefa[20];                        //essa funcao tem como objetivo modificar qualquer parametro da tarefa, podendo ser nome, descricao,
+    char novadescricao[100];                   // prioridade, estado e categoria 
     int novaprioridade;
     char novoestado[15];
     int num;
@@ -302,7 +302,7 @@ void Alterartarefa(Tarefa Nome[]) {
     }
 };
 
-void FiltrartarefaPri(Tarefa Nome[]) {
+void FiltrartarefaPri(Tarefa Nome[]) {                      //aqui a funcao percorre toda a Lista geral, e procura qual tarefa tem a mesma prioridade da digitada pelo usuario
     int pri;
     int contador;
     printf("Digite a prioridade que deseja filtrar: ");
@@ -319,13 +319,13 @@ void FiltrartarefaPri(Tarefa Nome[]) {
                 printf("Tarefa: %s", Nome[i].tarefa);
             }
     }
-    if (contador == 0) {
-        printf("Nao tem nenhuma tarefa com essa prioridade!\n");
+    if (contador == 0) {                                //este contador, temos em todas as funções praticamente, e serve para verificar se tem alguma tareda com o parametro
+        printf("Nao tem nenhuma tarefa com essa prioridade!\n");    //digitado pelo usuario, caso não tenha, o contador vai ser 0 e aparecera a mensagem á esquerda
     }
     printf("\n");
 }
 
-void FiltrartarefaEstado(Tarefa Nome[]) {
+void FiltrartarefaEstado(Tarefa Nome[]) {               //idem ao anterior, porém comprar o estado com o estado digitado
     int contador;
     char estado[15];
     char testeestado[15];
@@ -370,7 +370,7 @@ void FiltrartarefaEstado(Tarefa Nome[]) {
 
 void FiltrartarefaCat(Tarefa Nome[]) {
     int contador;
-    char categoria[15];
+    char categoria[15];                     //novamente, temos o mesmo objetivo, porém comparando a categoria desta vez
     char testecat[15];
     char testecat2[15];
     char testecat3[15];
@@ -388,7 +388,7 @@ void FiltrartarefaCat(Tarefa Nome[]) {
     do {
         printf("Digite a categoria que deseja filtrar(Casa,Trabalho,Estudo e "
                "Lazer): ");
-        fgets(categoria, sizeof(categoria), stdin);
+        fgets(categoria, sizeof(categoria), stdin);             //tem a comparacao do q foi digitado com o q é possível
         len = strlen(categoria);
         if (categoria[len - 1] == '\n')
             categoria[--len] = 0;
@@ -415,7 +415,7 @@ void FiltrartarefaCat(Tarefa Nome[]) {
     printf("\n");
 }
 
-void FiltrartarefaCatPri(Tarefa Nome[]) {
+void FiltrartarefaCatPri(Tarefa Nome[]) {           //por fim, compara  a categoria e a prioriade ao mesmo tempo
     int pri;
     int contador;
     char categoria[15];
@@ -466,7 +466,7 @@ void FiltrartarefaCatPri(Tarefa Nome[]) {
     printf("\n");
 }
 
-void ExportarPri(Tarefa Nome[]) {
+void ExportarPri(Tarefa Nome[]) {                   //agora temos as exportações, começando com essa que filtra as tarefas com essa prioridade e exporta para um arquivo
     int contador;
     int pri;
     printf("Digite a prioridade das tarefas quais deseja exportar: ");
@@ -474,7 +474,7 @@ void ExportarPri(Tarefa Nome[]) {
     FILE *tarefaarq = fopen("tarefas.txt","w"); // cria um arquivo para a tarefa pela prioridade
     fprintf(tarefaarq, "Prioridade desejada: %d\n", pri);
     fprintf(tarefaarq, "----- TAREFAS -----\n");
-    fprintf(tarefaarq, "\n");
+    fprintf(tarefaarq, "\n");                               //fprint é usado para escrever no arquivo de texto diretamente
     printf ("Prioridade desejada: %d\n", pri);
     printf("----- TAREFAS -----\n");
     printf("\n");
@@ -495,7 +495,7 @@ void ExportarPri(Tarefa Nome[]) {
 }
 
 void ExportarCat(Tarefa Nome[]) {
-    int contador;
+    int contador;                       //idem ao anterior, porém exporta para um arquivo txt as tarefas que tem a mesma categoria ao comparar com a digitada
     char categoria[15];
     char testecat[15];
     char testecat2[15];
@@ -514,7 +514,7 @@ void ExportarCat(Tarefa Nome[]) {
     do {
         printf("Digite a categoria que deseja filtrar(Casa,Trabalho,Estudo e Lazer): ");
         fgets(categoria, sizeof(categoria), stdin);
-        len = strlen(categoria);
+        len = strlen(categoria);                                //novamente a comparacao para ver se digitou o que é possível
         if (categoria[len - 1] == '\n')categoria[--len] = 0;
         comp = strcmp(categoria, testecat);
         comp2 = strcmp(categoria, testecat2);
@@ -544,8 +544,8 @@ void ExportarCat(Tarefa Nome[]) {
     printf("\n");
 }
 
-void ExportarCatPri(Tarefa Nome[]) {
-    int pri;
+void ExportarCatPri(Tarefa Nome[]) {                    //por fim a ultima exportação é da categoria com a prioridade 
+    int pri;                                            // tem a mesma funcao porem compara as duas coisas ao mesmo tempo
     int contador;
     char categoria[15];
     char testecat[15];
@@ -590,18 +590,18 @@ void ExportarCatPri(Tarefa Nome[]) {
     }
 
     if (contador == 0) {
-        printf("Nao tem nenhuma tarefa com essa prioridade em comum com a "
+        printf("Nao tem nenhuma tarefa com essa prioridade em comum com a "             
                "categoria!\n");
         fprintf(tarefaarq,"Nao tem nenhuma tarefa com essa prioridade em comum com a "
                           "categoria!\n");
     }
     fclose(tarefaarq);
-    printf("\n");
+    printf("\n");                   //como em todas, o arquivo é fechado brevemente após a finalização de tudo que tem que ser feito em cada função
 }
 
 int lerarquivo(Tarefa Nome[], char nomearq[]) {
-    FILE *arqtarefas = fopen(nomearq, "rb");
-    if (arqtarefas == NULL) {
+    FILE *arqtarefas = fopen(nomearq, "rb");        //essa função, le o arquivo escolhido pelo usuário, que no nosso caso, é o arquivo geral da Lista de tarefas
+    if (arqtarefas == NULL) {                          // e transforma o binario em itens para a Lista geral de tarefas
         return 1;
     }
     fread(&Nome, sizeof(Tarefa), maxtarefas, arqtarefas);
